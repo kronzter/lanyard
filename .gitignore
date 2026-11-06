@@ -1,0 +1,31 @@
+# deps
+node_modules/
+
+# secrets
+.env
+.env.*
+!.env.example
+
+# expo / react native
+.expo/
+dist/
+web-build/
+android/
+ios/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# P0.6 throwaway spike
+spike/
+
+# foundry
+packages/contracts/out/
+packages/contracts/cache/
+packages/contracts/broadcast/
+
+# misc
+coverage/
+*.log
+.DS_Store

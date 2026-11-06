@@ -28,7 +28,7 @@ Status values: `todo` · `doing` · `done` · `blocked`. Finding status: `open` 
 | Spec | Owner | Status | Commit | Notes |
 | --- | --- | --- | --- | --- |
 | P0.6 Wallet and chain spike | pair | todo | | |
-| P0.1 Repo skeleton and CI | A | todo | | |
+| P0.1 Repo skeleton and CI | A | done | (this commit) | ENSv2 pinned at contracts-v2@48b3e2d, forge-std v1.17.0. `expo export --platform web` joins `ci:local` in P0.5. CI also triggers on phase branches. CODEOWNERS uses `@person-a`/`@person-b` placeholders |
 | P0.2 Shared types, config, deployments | B | todo | | |
 | P0.3 Interfaces, mocks, conformance | pair | todo | | |
 | P0.4 Fixtures | B | todo | | |

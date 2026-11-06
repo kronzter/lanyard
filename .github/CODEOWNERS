@@ -1,0 +1,47 @@
+# Encodes the path-ownership table in plans/00-README.md.
+# @person-a = Person A (ENS & venue), @person-b = Person B (Arkiv & flows).
+# Placeholders: replace with real GitHub usernames.
+# Later lines win, so specific paths come after general ones.
+
+# Default: both
+*                                       @person-a @person-b
+
+# Shared (both): P0, then integration branches only
+/packages/shared/                       @person-a @person-b
+/fixtures/                              @person-a @person-b
+/apps/app/app/_layout.tsx               @person-a @person-b
+/apps/app/src/shell/                    @person-a @person-b
+/apps/app/src/flags.ts                  @person-a @person-b
+/apps/app/src/providers.ts              @person-a @person-b
+/apps/app/app.json                      @person-a @person-b
+/apps/app/eas.json                      @person-a @person-b
+/apps/app/package.json                  @person-a @person-b
+/README.md                              @person-a @person-b
+/.claude/skills/                        @person-a @person-b
+/skills-lock.json                       @person-a @person-b
+/e2e/                                   @person-a @person-b
+
+# Track A: ENS & venue
+/packages/contracts/                    @person-a
+/packages/ens/                          @person-a
+/packages/venue/                        @person-a
+/apps/app/app/admin/ens/                @person-a
+/apps/app/app/venue/                    @person-a
+/apps/app/src/components/venue/         @person-a
+/deployments/sepolia.json               @person-a
+
+# Track B: Arkiv & flows
+/packages/arkiv/                        @person-b
+/packages/rules/                        @person-b
+/packages/cli/                          @person-b
+/arkiv/                                 @person-b
+/apps/app/app/volunteer/                @person-b
+/apps/app/app/lead/                     @person-b
+/apps/app/app/tickets/                  @person-b
+/apps/app/app/judge/                    @person-b
+/apps/app/app/team/                     @person-b
+/apps/app/app/organizer/                @person-b
+/deployments/rabdi.json                 @person-b
+
+# Plans: frozen (both); tracker sections per person, file shared
+/plans/                                 @person-a @person-b

@@ -1,0 +1,9 @@
+{
+  "name": "@lanyard/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "forge test",
+    "build": "forge build"
+  }
+}

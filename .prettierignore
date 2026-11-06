@@ -1,0 +1,11 @@
+node_modules
+pnpm-lock.yaml
+skills-lock.json
+.claude
+plans
+packages/contracts/lib
+packages/contracts/out
+packages/contracts/cache
+dist
+.expo
+coverage

@@ -60,7 +60,7 @@ The winner-name contract and the resolver lock (A4). Issuing partner judges (A4.
 ### B4.4 · Freeze pipeline
 
 **Requirements**
-- **B4.4-R1** WHEN results freeze, THE `lanyard freeze` CLI SHALL, in this order: record the Arkiv and Sepolia head blocks; decrypt the scores; run the rules; write the readonly `results` record (rankings, record hashes, both blocks, `RULES_VERSION`, decryption key); call `ResultsPublisher.setEventResults`; call `declareWinner` once per winning team (all its prizes in one call, from `fixtures/prizes.json`); call `lockResults`.
+- **B4.4-R1** WHEN results freeze, THE `lanyard freeze` CLI SHALL, in this order: record the Arkiv and Sepolia head blocks; decrypt the scores; run the rules; write the readonly `results` record (rankings, the key and content hash of every judging input record, both head blocks, `RULES_VERSION`, decryption key; within the 128 KiB payload cap); call `ResultsPublisher.setEventResults`; call `declareWinner` once per winning team (all its prizes in one call, from `fixtures/prizes.json`); call `lockResults`.
 - **B4.4-R2** WHEN freeze is run a second time, THE CLI SHALL refuse.
 - **B4.4-R3** WHEN any step fails, THE CLI SHALL stop and print which steps are done, and SHALL be resumable from the failed step without repeating earlier writes.
 - **B4.4-R4** WHEN `lanyard verify mumbai2026` runs after freeze, THE CLI SHALL print `MATCH` (with mocks now, Sepolia at I4).
@@ -94,6 +94,7 @@ The winner-name contract and the resolver lock (A4). Issuing partner judges (A4.
 - [ ] `prizes.json` names a team with no submission: freeze refuses before any write
 - [ ] `lanyard verify` on a second laptop: `MATCH`
 - [ ] Change one score byte in a copy of the inputs: verify prints the differing item
+- [ ] Delete or let expire a listed input in a test edition: verify names it and doesn't print `MATCH`
 
 ## Phase done when
 

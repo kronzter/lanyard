@@ -30,7 +30,8 @@ This one page tells anyone (either builder, or a fresh AI agent session) everyth
 - Field screens (hacker, volunteer, lead, judge, team) are for phones. Organizer screens, ENS consoles and the venue editor are **web-only**: on Android they show "Open on web".
 - Venue map: `react-native-svg` + `react-native-gesture-handler` + `react-native-reanimated`, the same component on native and web.
 - `packages/rules` is pure TypeScript that runs unchanged on Hermes (in the app) and Node (in the CLI).
-- **Gas.** Only staff send Sepolia transactions: organizer, coordinator, head judge, partners and the results key. Everyone else only reads ENS. Everyone who writes to Arkiv gets tGLM once, dripped by the onboarding desk from the `Faucet` contract on Rabdi.
+- **Gas.** Only staff send Sepolia transactions: organizer, coordinator, head judge, partners and the results key. Everyone else only reads ENS. Everyone who writes to Arkiv gets a fixed amount of tGLM once, sent by the onboarding desk from the desk wallet (each drip is logged as an Arkiv `drip` record, so the desk can refuse repeats).
+- **Arkiv RPC access.** The app ships a dedicated public Arkiv access key (`EXPO_PUBLIC_ARKIV_ACCESS_KEY`). It's treated as public and rotated if abused. The CLI uses its own key.
 
 ## 4 · Names
 
@@ -70,9 +71,9 @@ Badges can't be transferred (there is no transfer-admin role). Revoke = `unregis
 
 Every record has `app: "lanyard"`, `event: "mumbai2026"`, `kind` and `by` (the writer's relative ENS label). The full table, with owners, flags and expiries, is in `B1-arkiv-data.md`.
 
-Kinds: `venue`, `seat_assignment`, `shift`, `clock`, `duty_pass`, `ticket`, `ticket_claim`, `ticket_resolution`, `project`, `submission`, `acceptance`, `rubric`, `judge_assignment`, `score_sheet`, `final_score`, `recusal`, `results`.
+Kinds: `venue`, `seat_assignment`, `shift`, `clock`, `duty_pass`, `ticket`, `ticket_claim`, `ticket_resolution`, `project`, `submission`, `acceptance`, `rubric`, `judge_assignment`, `score_sheet`, `final_score`, `recusal`, `results`, `drip`.
 
-Every app write is signed by the user's wallet through AppKit. Use `executeBatch` wherever records belong together: one batch is one wallet approval.
+Every app write is signed by the user's wallet through AppKit, with explicit gas and gasPrice (Rabdi estimation must not be left to the wallet). Use `executeBatch` wherever records belong together: one batch is one wallet approval. Each kind is a typed SDK 1.0.x schema (`defineSchema`); only `.indexed()` columns can be filtered.
 
 ## 7 · Rules that matter most
 
@@ -84,11 +85,12 @@ Every app write is signed by the user's wallet through AppKit. Use `executeBatch
 - **Tickets:** 4 h expiry. A claim lasts 15 min. The earliest claim by block wins. At most 3 open tickets per hacker. Partner-help tickets can be claimed only by holders of that partner's `staff` badges. Medical or safety issues are never tickets: the app shows the staff phone number and the help desk. A helper's position starts at their zone's help-desk POI when they clock in, then moves to each seat they resolve. Next-ticket score: `walking_metres − 5 × minutes_waiting`, lowest wins.
 - **Judging:** one submission per team, from the team lead only. The earliest valid one before the deadline counts; later ones are shown as duplicates. Late submissions are excluded. The organizer can't patch projects. Cross-track scores are rejected. A revoked judge loses **all** their scores. The earliest final per judge per project counts. Scores stay sealed to the event public key until freeze. Ranking uses the **raw weighted mean** per track.
 - **Freeze order** (local CLI): record both head blocks → decrypt → rules → `results` record → `setEventResults` → `declareWinner` per winning team → `lockResults`. It runs once and can be resumed. The prize rules are TBD (§14).
+- **Verify covers judging.** Arkiv queries read current state only (no historical snapshots), and short-lived records (claims, tickets) vanish when they expire. So the `results` record lists the key and content hash of every judging input; `lanyard verify` re-fetches those keys, checks the hashes, recomputes and prints `MATCH`. Judging inputs live until results + 30 d, which is the verify window. Volunteer and ticket rules are checked live in the app only.
 
 ## 8 · How the two tracks stay independent
 
 - **Person A · ENS & venue:** `packages/{contracts,ens,venue}`, `apps/app/app/admin/ens/*`, `apps/app/app/venue/*`, `apps/app/src/components/venue/*`.
-- **Person B · Arkiv & flows:** `packages/{arkiv,faucet,rules,cli}`, `arkiv/`, `apps/app/app/{volunteer,lead,tickets,judge,team,organizer}/*`.
+- **Person B · Arkiv & flows:** `packages/{arkiv,rules,cli}`, `arkiv/`, `apps/app/app/{volunteer,lead,tickets,judge,team,organizer}/*`.
 - **Shared** (`packages/shared`, fixtures, app shell, flags, providers, app config): built together in P0. After that, only additive changes, each in its own commit and logged in `TRACKER.md`.
 - Interfaces: `EnsReader` (real in A2.4), `Router` (real in A3.2), `ResultsPublisher` (real in A4.2). Each has a mock and a conformance suite.
 - Flags: ENS mock→sepolia at I2 · router stub→grid at I3 · results mock→sepolia at I4.
@@ -99,7 +101,7 @@ Every app write is signed by the user's wallet through AppKit. Use `executeBatch
 | Step | Track A | Track B |
 | --- | --- | --- |
 | 0 | P0 Foundation (joint, P0.6 spike first) | P0 Foundation (joint) |
-| 1 | A1 Namespace | B1 Arkiv data + faucet |
+| 1 | A1 Namespace | B1 Arkiv data + tGLM drip |
 | ↳ | I1 Names meet records | I1 |
 | 2 | A2 Permissions + EnsReader | B2 Rules + verifier |
 | ↳ | I2 Real ENS history | I2 |
@@ -130,15 +132,22 @@ Full detail is in `00-README.md` and `00-git-workflow.md`.
 - A child name stops resolving when its parent expires, so winners need their team name renewed.
 - Emancipation can't be undone. Check `isEmancipated()` and the root role holders, including `ROLE_UPGRADE`.
 
-**Arkiv**
+**Arkiv** (read the committed `.claude/skills/arkiv*` skills; they target SDK 1.0.x on Rabdi)
 - `readonly` and `permissionlessExtension` are fixed when a record is created.
 - Expiry fires **no event**: compare `$expiresAt` with the current block.
+- `$createdAt`, `$updatedAt` and `$expiresAt` are block numbers.
+- Queries read **current state only**. There's no historical snapshot or "query at block N".
+- Rabdi supports EOAs and native entity operations only, not arbitrary EVM contracts.
+- The RPC needs an access key in the URL path. Keyless is heavily limited (429). Redact keyed URLs in logs and errors.
+- `watchEntityEvents` breaks for good once it falls ~1,000 blocks (~30 min) behind head. After the app resumes from the background, recreate the watcher at head and reconcile with a query.
+- `eth_getLogs` fails for blocks with logs more than ~1,000 blocks old. Don't rely on old logs; use queries, or `eth_getTransactionReceipt` for a known tx.
+- Send writes with explicit nonce, gas and gasPrice: a floor of 1,000,000 gas plus 400,000 per extra batch operation. Check `receipt.status`. Never resend after an uncertain submission without reading back first.
 - Extensions can only move expiry later, counted from now. The maximum lifetime is 7,884,000 blocks (≈182.5 days).
 - Limits: 32 attributes, 128-byte strings, 128 KiB payload, 100 rows per page.
 - The node rejects `!=`. Never use `ne()`/`not()`; model status positively.
 - `executeBatch` is atomic and runs in order: creates → patches → deletes → extensions → ownership changes.
 - The SDK renamed `expires` → `expiration`. The version is pinned; don't upgrade.
-- The public RPC is rate-limited and there's no access key (no backend). P0.6 measures the limits; cache reads on the device.
+- The app's access key is public, so its quota can be burned by anyone. P0.6 measures how much the app itself uses; cache reads on the device.
 
 **Expo, AppKit, wallets**
 - No Expo Go. Use local dev builds.
@@ -164,10 +173,10 @@ Full detail is in `00-README.md` and `00-git-workflow.md`.
 | Duty pass | An Arkiv record that expires exactly at shift end. Display only |
 | Claim | A `ticket_claim`: a 15-minute hold on a ticket |
 | Onboarding desk | The web console where the organizer issues badges and teams (A4.3) and drips tGLM (B1.1) |
-| Faucet | Contract on Rabdi, funded by the organizer, that sends a fixed amount of tGLM once per address |
+| Drip | A fixed tGLM transfer from the desk wallet to a new user, logged as a `drip` record so it happens once per address |
 | Results key | The wallet the freeze CLI uses to publish results and declare winners |
 | Freeze | The one-time local pipeline that publishes results and winner names |
-| Verify | `lanyard verify mumbai2026`: recomputes everything at the recorded blocks and prints `MATCH` |
+| Verify | `lanyard verify mumbai2026`: re-fetches the judging inputs listed in the results record, checks their hashes, recomputes at the recorded Sepolia block, and prints `MATCH` |
 | Conformance suite | Tests that every implementation of an interface must pass, mock and real alike |
 
 ## 13 · Decisions taken
@@ -179,9 +188,11 @@ Full detail is in `00-README.md` and `00-git-workflow.md`.
 | APK builds | Always local (`eas build --local`) |
 | Wallets | Reown AppKit with external wallets; fallback to AppKit email/social login if P0.6 fails |
 | Backend | None. A read-only cache (no keys, signs nothing) only if P0.6 shows the RPC limits can't be lived with |
+| Arkiv RPC key | A dedicated public app key in the bundle (`EXPO_PUBLIC_ARKIV_ACCESS_KEY`), rotated if abused |
+| Verify scope | Judging only, by input key + content hash listed in the results record |
 | Badge issue | The organizer issues directly at the desk; no vouchers |
 | Team registration | The organizer registers teams at the desk, to the lead's address |
-| tGLM for users | On-chain `Faucet` contract on Rabdi; the desk calls `drip` |
+| tGLM for users | The desk sends a fixed amount from the desk wallet, once per address (no contract: Rabdi has no arbitrary EVM contracts) |
 | Books | Four: hackers, judges, volunteers, partners. Mentors and agents are cut |
 | Partners | `arkiv`, `ens`, config-driven; a third partner may be added later |
 | Partner ticket helpers | `staff.<partner>.partners` sub-book |

@@ -17,9 +17,9 @@ Status values: `todo` · `doing` · `done` · `blocked`. Finding status: `open` 
 | S3 Arkiv SDK on Hermes with AppKit signer (record polyfills) | todo | |
 | S4 `executeBatch` = one approval | todo | |
 | S5 S2–S4 on Expo web (wagmi adapter) | todo | |
-| S6 Deploy + call a contract on Rabdi | todo | |
+| S6 Wallet keeps app-set gas/gasPrice on Rabdi; desk transfer works | todo | |
 | S7 Archive Sepolia read at a past block from the phone | todo | |
-| S8 Public Rabdi RPC load + ENS read volume | todo | |
+| S8 App-key load, quota per hour, watcher resume, ENS read volume | todo | |
 
 **Fallbacks chosen:** none yet.
 
@@ -100,11 +100,11 @@ Status values: `todo` · `doing` · `done` · `blocked`. Finding status: `open` 
 
 ## Track B · Person B
 
-### B1 · Arkiv data and faucet
+### B1 · Arkiv data and tGLM drip
 
 | Spec | Status | Commit | Notes |
 | --- | --- | --- | --- |
-| B1.1 Chain and faucet | todo | | |
+| B1.1 Chain and tGLM drip | todo | | |
 | B1.2 Record kinds and writers | todo | | |
 | B1.3 Queue, batches, readers, watcher | todo | | |
 

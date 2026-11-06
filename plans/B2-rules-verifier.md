@@ -64,10 +64,10 @@ Records that fail are kept and shown greyed out with a reason, never hidden.
 **Requirements**
 - **B2.3-R1** THE rule version SHALL be the hash of the bundled rules source, exported as `RULES_VERSION`.
 - **B2.3-R2** WHEN the input order is shuffled 1,000 times, THE output SHALL not change.
-- **B2.3-R3** WHEN `lanyard verify <event>` runs, THE CLI SHALL read the `results` record, fetch the same inputs at the recorded Arkiv and Sepolia blocks, recompute, and print `MATCH` or the first differing item.
-- **B2.3-R4** WHEN any read fails, THE CLI SHALL exit non-zero, naming the failing read, and never print `MATCH`.
+- **B2.3-R3** WHEN `lanyard verify <event>` runs, THE CLI SHALL read the `results` record, fetch every listed judging input by key, check each one's content hash, read ENS at the recorded Sepolia block, recompute the judging outputs, and print `MATCH` or the first differing item. (Arkiv queries read current state only, so verify works from listed keys and hashes, never from "state at block N".)
+- **B2.3-R4** WHEN any read fails, a listed input is missing or expired, or a hash differs, THE CLI SHALL exit non-zero, naming the item, and never print `MATCH`.
 - **B2.3-R5** THE CLI SHALL verify 2,000 records in under a minute.
-- **B2.3-R6** WHEN `lanyard hash <event> --arkiv-block N --sepolia-block M` runs, THE CLI SHALL print the rules output hash without needing a `results` record (used at I2 to compare machines before any freeze exists).
+- **B2.3-R6** WHEN `lanyard hash <event> --sepolia-block M` runs, THE CLI SHALL compute the rules output hash over the records live at the current Arkiv head, and print that hash together with the head block it observed. No `results` record is needed (used at I2 to compare machines before any freeze exists; run both with no writes in between).
 - **B2.3-R7** THE app SHALL be able to show the same output hash for given blocks, so a phone and a laptop can be compared.
 
 **Commit:** `feat(cli): B2.3 RULES_VERSION, lanyard verify and lanyard hash`

@@ -3,7 +3,7 @@
 Event OS for hackathons on **ENSv2 (Sepolia)** and **Arkiv (Rabdi)**, shipped as an **Expo dApp** for Android and web. Two builders, two tracks, phase- and spec-driven.
 
 - **Person A · ENS & venue track.** Contracts, names, permissions, ENS reads, venue grid, routing, winner names, ENS consoles.
-- **Person B · Arkiv & flows track.** Arkiv records, faucet, rules engine, verifier CLI, volunteer, ticket and judging flows.
+- **Person B · Arkiv & flows track.** Arkiv records, tGLM drip, rules engine, verifier CLI, volunteer, ticket and judging flows.
 
 Read `00-CONTEXT.md` first (the master context), then `00-git-workflow.md` before the first commit.
 
@@ -23,7 +23,7 @@ Read `00-CONTEXT.md` first (the master context), then `00-git-workflow.md` befor
 | Chain | Who sends transactions | How they get gas |
 | --- | --- | --- |
 | Sepolia | Organizer (badges, teams, revoke, revive), volunteer coordinator, head judge, partners, results key (freeze CLI) | Staff wallets are funded with Sepolia ETH by hand |
-| Rabdi | Everyone who writes an Arkiv record | The onboarding desk drips tGLM from the on-chain `Faucet` contract (B1.1) |
+| Rabdi | Everyone who writes an Arkiv record | The onboarding desk sends a fixed amount of tGLM from the desk wallet, once per address (B1.1) |
 
 Hackers, volunteers and team leads **never send a Sepolia transaction**. They only read ENS.
 
@@ -34,7 +34,7 @@ Hackers, volunteers and team leads **never send a Sepolia transaction**. They on
    spike · shared types · interfaces · mocks · fixtures · app shell
                  /                                  \
    Track A (Person A)                          Track B (Person B)
-   A1 Namespace                                B1 Arkiv data + faucet
+   A1 Namespace                                B1 Arkiv data + tGLM drip
         │            ──► I1 Names meet records ◄──    │
    A2 Permissions + EnsReader                  B2 Rules + verifier
         │            ──► I2 Real ENS history ◄──      │
@@ -57,7 +57,7 @@ Hackers, volunteers and team leads **never send a Sepolia transaction**. They on
 | --- | --- | --- |
 | P0 · joint | `P0-foundation.md` | P0.6 wallet + chain spike (first) · P0.1 repo + CI · P0.2 shared types + config · P0.3 interfaces, mocks, conformance · P0.4 fixtures · P0.5 app shell |
 | A1 | `A1-namespace.md` | A1.1 base + edition · A1.2 books + badge registrar · A1.3 teams + reserved `winner` |
-| B1 | `B1-arkiv-data.md` | B1.1 chain + faucet · B1.2 record kinds + writers · B1.3 queue, batch, readers, watcher |
+| B1 | `B1-arkiv-data.md` | B1.1 chain + tGLM drip · B1.2 record kinds + writers · B1.3 queue, batch, readers, watcher |
 | I1 | `I1-names-meet-records.md` | Real badges, real `by` labels on Arkiv |
 | A2 | `A2-permissions-ens-reader.md` | A2.1 resolvers · A2.2 scoped grants · A2.3 revoke + revive · A2.4 real `EnsReader` |
 | B2 | `B2-rules-verifier.md` | B2.1 time mapping · B2.2 rules core · B2.3 determinism + `lanyard verify` |
@@ -78,10 +78,11 @@ Disjoint paths mean merges don't conflict.
 | Path | Owner |
 | --- | --- |
 | `packages/shared/**` | **Both.** Additive changes only, each in its own commit (see below) |
+| `.claude/skills/**`, `skills-lock.json` | Both |
 | `fixtures/**`, `apps/app/app/_layout.tsx`, `apps/app/src/shell/**`, `apps/app/src/flags.ts`, `apps/app/src/providers.ts`, `apps/app/app.json`, `apps/app/eas.json`, `apps/app/package.json`, `README.md` | Both (P0, then integration branches only) |
 | `packages/contracts/**`, `packages/ens/**`, `packages/venue/**` | A |
 | `apps/app/app/admin/ens/**`, `apps/app/app/venue/**`, `apps/app/src/components/venue/**` | A |
-| `packages/arkiv/**`, `packages/faucet/**`, `packages/rules/**`, `packages/cli/**`, `arkiv/**` | B |
+| `packages/arkiv/**`, `packages/rules/**`, `packages/cli/**`, `arkiv/**` | B |
 | `apps/app/app/{volunteer,lead,tickets,judge,team,organizer}/**` | B |
 | `deployments/sepolia.json` | A writes; B only reads |
 | `deployments/rabdi.json` | B writes; A only reads |
@@ -154,13 +155,14 @@ The other person reads the findings when they get to them and can add rows. They
 ## Shared conventions
 
 - **Networks.** ENS on Sepolia. Arkiv on Rabdi: chain ID `7794095`, RPC `https://rpc.rabdi.db-chain.testnet.arkiv.network`, 2 s blocks, tGLM gas.
-- **RPCs.** Arkiv uses the public Rabdi RPC. There's no access key, because there's no backend to hold one. Sepolia uses an **archive** RPC whose key is restricted to the app (Android package name and web origin). It ships in the bundle as `EXPO_PUBLIC_SEPOLIA_RPC_URL`.
+- **RPCs.** The Rabdi RPC needs an access key in its URL; the keyless endpoint is heavily rate-limited (HTTP 429). With no backend, the app ships a **dedicated public app key** (free, from hub.arkiv.network) as `EXPO_PUBLIC_ARKIV_ACCESS_KEY`. Anyone can extract it and spend its quota (100M units; each query costs 10), so treat it as public and rotate it if it's abused. Scripts and the CLI use their own key from the local `.env`. Sepolia uses an **archive** RPC whose key is restricted to the app (Android package name and web origin). It ships in the bundle as `EXPO_PUBLIC_SEPOLIA_RPC_URL`.
+- **Agent skills.** The Arkiv (SDK 1.0.x) and ENS skills are committed under `.claude/skills/` (pinned in `skills-lock.json`). Read the relevant skill before writing Arkiv or ENS code. Each person also installs the ethskills plugin themselves: `/plugin marketplace add austintgriffith/ethskills`, then `/plugin install ethskills@ethskills`.
 - **Names.** Base `lanyard.eth`. Edition `mumbai2026.lanyard.eth`. Team `<team>.mumbai2026.lanyard.eth`. Winner `winner.<team>.mumbai2026.lanyard.eth`, created whenever a winner is declared.
 - **Labels in code** are relative to the edition: `priya.volunteers`, `zkpay`, `ana.judges.arkiv.partners`.
 - **Partners** are listed in `event.config.ts`: `arkiv` and `ens` for now. Adding one is a config and seed change, never a code change.
-- **Pinned versions.** Exact versions in `package.json` for `@arkiv-network/sdk`, the Expo SDK, Reown AppKit and viem. ENSv2 contracts are pinned by commit in `foundry.toml`. No upgrades during the build.
+- **Pinned versions.** Exact versions in `package.json` for `@arkiv-network/sdk` (1.0.x, which the skills target), the Expo SDK, Reown AppKit and viem. ENSv2 contracts are pinned by commit in `foundry.toml`. No upgrades during the build.
 - **Addresses** live in `deployments/sepolia.json` and `deployments/rabdi.json`. Nothing is hard-coded.
-- **Secrets.** The organizer key, results key and score-decryption key live only in the local `.env` of whoever runs the deploy, seed or freeze scripts. They never ship in the app. Users' keys never leave their wallets. `.env` is git-ignored; `.env.example` is committed.
+- **Secrets.** The organizer key, results key, desk wallet key (scripts only), score-decryption key and the CLI's Arkiv access key live only in the local `.env` of whoever runs the deploy, seed or freeze scripts. They never ship in the app. The only key-like values in the app are the public Arkiv app key and the app-restricted Sepolia RPC URL. Users' keys never leave their wallets. `.env` is git-ignored; `.env.example` is committed.
 - **APK builds** always use `--local`.
 - **Requirements style.** EARS: `WHEN <trigger>, THE <component> SHALL <response>`. IDs are per spec, e.g. `A1.2-R3`.
 - **Teams** have at most 4 people, written Person A, Person B, Person C, Person D in fixtures and the demo. (Not to be confused with the two builders.)

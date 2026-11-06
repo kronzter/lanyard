@@ -34,7 +34,7 @@ The rules engine (B2) runs on real Sepolia history through the real `SepoliaEnsR
 
 ## Smoke test
 
-`pnpm e2e:i2` plays the scenario, runs the rules with `SepoliaEnsReader`, asserts each expected outcome, then prints `lanyard hash mumbai2026 --arkiv-block N --sepolia-block M`. Run the hash on the second laptop and read it in the Android app: all identical.
+`pnpm e2e:i2` plays the scenario, runs the rules with `SepoliaEnsReader`, asserts each expected outcome, then prints `lanyard hash mumbai2026 --sepolia-block M` with the Arkiv head block it saw. With no writes in between, run the hash on the second laptop and read it in the Android app: all identical.
 
 ## Cross bug hunt
 

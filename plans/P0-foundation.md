@@ -24,9 +24,9 @@ Prove the stack works before anyone builds on it. Throwaway code goes in `spike/
 - **S3** The Arkiv SDK runs on Hermes, using AppKit's EIP-1193 provider as the signer: create one entity, read it back, and check `$owner` == the connected address. Record the exact polyfills needed.
 - **S4** One `executeBatch` with two creates needs exactly one wallet approval.
 - **S5** S2–S4 pass on Expo web too, through AppKit's wagmi adapter.
-- **S6** A trivial contract deploys to Rabdi and can be called (this is what decides whether the faucet is feasible).
+- **S6** MetaMask mobile accepts a Rabdi write with explicit nonce, gas (≥ 1,000,000) and gasPrice set by the app, without re-estimating, and `receipt.status` is success. A desk-wallet tGLM transfer also goes through.
 - **S7** From the phone, `getEnsText` works at a past Sepolia block through the archive RPC, using an app-restricted key.
-- **S8** Load test from one device: 10 parallel `watchEntityEvents` subscriptions and 200 reads/min on the public Rabdi RPC. Also count the ENS reads `prepare` would need for 500 fixture records, with an on-device cache. Record any rate-limit errors and the ceiling found.
+- **S8** Load test from one device, using the public app Arkiv key: 10 parallel `watchEntityEvents` subscriptions and 200 reads/min. Background the app for over 30 min, resume, and confirm the watcher is recreated and reconciled. Also count the ENS reads `prepare` would need for 500 fixture records, with an on-device cache. Record any 429s and the quota spent per hour of normal use.
 
 **Fallbacks**
 
@@ -34,8 +34,8 @@ Prove the stack works before anyone builds on it. Throwaway code goes in `spike/
 | --- | --- |
 | S1–S5 fail with external wallets | Use AppKit's email/social-login wallet (stays on Reown) |
 | S3 fails on Hermes even with polyfills | Stop and decide jointly before going further |
-| S6 fails | The desk sends tGLM straight from the organizer wallet; the `Faucet` contract is dropped from B1.1 |
-| S7 or S8 hit limits | Add a read-only cache service that holds no keys, signs nothing, and that `lanyard verify` bypasses |
+| S6 fails (wallet overrides gas) | Stop and decide jointly: AppKit email/social-login wallet, or a different wallet app |
+| S7 or S8 hit limits | Add a read-only cache service that signs nothing and that `lanyard verify` bypasses (it would hold the Arkiv key instead of the bundle) |
 
 **Done when** every check has pass/fail and notes in `TRACKER.md`, and any fallback is chosen and noted there.
 
@@ -46,15 +46,14 @@ Prove the stack works before anyone builds on it. Throwaway code goes in `spike/
 ### P0.1 · Repo skeleton and CI · *Person A*
 
 **Requirements**
-- **P0.1-R1** THE repo SHALL be a pnpm workspace with `packages/{shared,contracts,ens,venue,arkiv,faucet,rules,cli}`, `apps/app`, `fixtures`, `deployments`, `arkiv`, `e2e`, `plans`.
+- **P0.1-R1** THE repo SHALL be a pnpm workspace with `packages/{shared,contracts,ens,venue,arkiv,rules,cli}`, `apps/app`, `fixtures`, `deployments`, `arkiv`, `e2e`, `plans`.
 - **P0.1-R2** WHEN staged files contain a private key or mnemonic pattern, THE `pre-commit` hook SHALL reject the commit.
-- **P0.1-R3** WHEN a pull request or a push to `main` happens, THE CI SHALL run lint, typecheck, `vitest`, `forge test` (both Foundry projects) and `expo export --platform web`.
+- **P0.1-R3** WHEN a pull request or a push to `main` happens, THE CI SHALL run lint, typecheck, `vitest`, `forge test` and `expo export --platform web`.
 - **P0.1-R4** THE `CODEOWNERS` file SHALL encode the path-ownership table in `00-README.md`.
 
 **Tasks**
 - [ ] Workspace, TypeScript base config, ESLint, Prettier
 - [ ] Foundry project in `packages/contracts`, with ENSv2 contracts pinned by commit
-- [ ] Foundry project in `packages/faucet` (Rabdi)
 - [ ] Husky `pre-commit`: secret scan + lint-staged
 - [ ] GitHub Actions workflow; `pnpm ci:local` runs the same steps
 - [ ] `CODEOWNERS`, `.env.example`, `.gitignore` (`.env`, `android/`, `*.apk`, `spike/`)

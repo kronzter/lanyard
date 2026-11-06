@@ -16,7 +16,7 @@ The whole event runs end to end on Sepolia and Rabdi with no mocks: results free
 
 ## Steps (one commit each)
 
-1. `chore(deploy): I4 fresh demo edition with all contracts, grants and faucet`
+1. `chore(deploy): I4 fresh demo edition with all contracts, grants and a funded desk wallet`
 2. `chore(fixtures): I4 run full demo seed on sepolia and rabdi`
 3. `feat(cli): I4 default results flag to sepolia`
 4. `feat(app): I4 wire WinnerBadge into providers`
@@ -45,7 +45,8 @@ Build the demo APK with `eas build --platform android --profile preview --local`
 - [ ] "Anyone can recompute": verify on a machine that never ran the app → `MATCH`; tamper with one input → the first differing item is printed
 - [ ] "Winner names are permanent": the organizer and the results key both fail to change `winner.zkpay…` records; the name can't be transferred
 - [ ] "No admin table": every permission shown in the permission map comes from chain reads
-- [ ] "No backend": the app works with only the public Rabdi RPC, the archive Sepolia RPC and the user's wallet; no other host is contacted
+- [ ] "No backend": the app contacts only the Rabdi RPC (public app key), the archive Sepolia RPC, the WalletConnect relay and the user's wallet; no Lanyard server exists
+- [ ] "Anyone can recompute" scope: verify covers judging; volunteer and ticket rules are only claimed as live, in-app checks
 - [ ] Freeze run again: refuses
 - [ ] Two phones, one ticket, the same second: one winner
 - [ ] Bundle scan of the APK and the web export: no organizer key, results key or decryption key

@@ -1,10 +1,12 @@
-# B1 · Arkiv data layer and faucet
+# B1 · Arkiv data layer and tGLM drip
 
 **Track:** B · **Branch:** `phase/B1-arkiv-data` · **Depends on:** P0 (including the P0.6 spike results) · **Integration:** I1
 
 ## Goal
 
-One package, `packages/arkiv`, that every screen uses to write, read and watch Lanyard's records on Rabdi, signing with the user's own wallet through AppKit. Plus the on-chain `Faucet` that gives each new user their first tGLM. Track B's later phases build only on this.
+One package, `packages/arkiv`, that every screen uses to write, read and watch Lanyard's records on Rabdi, signing with the user's own wallet through AppKit. Plus the desk drip that gives each new user their first tGLM. Track B's later phases build only on this.
+
+Read the committed Arkiv skills first (`.claude/skills/arkiv` routes to the rest). They target SDK 1.0.x on Rabdi and override any older assumption in this file.
 
 ## Out of scope
 
@@ -32,32 +34,33 @@ Every record carries `app: "lanyard"`, `event: "mumbai2026"`, `kind`, and `by` (
 | `score_sheet` | Judge | none | Judging end + 2 d | `project`, `judge` |
 | `final_score` | Judge | readonly | Results + 30 d | `project`, `judge` |
 | `recusal` | Judge or organizer | readonly | Results + 30 d | `project`, `judge` |
-| `results` | Results key | readonly + permissionlessExtension | Maximum | (payload: ranking, hashes, blocks, rule version, decryption key) |
+| `results` | Results key | readonly + permissionlessExtension | Maximum | (payload: ranking, key + content hash of every judging input, both blocks, rule version, decryption key) |
+| `drip` | Desk wallet | readonly | Event end + 7 d | `recipient`, `tx` |
 
 Attribute types: labels and IDs are `str` (≤128 bytes); times are `u64` Unix seconds; references are record keys.
 
 ---
 
-### B1.1 · Chain and faucet
+### B1.1 · Chain and tGLM drip
+
+Rabdi supports EOAs and native entity operations only, not arbitrary EVM contracts, so there's no faucet contract. The desk sends tGLM from its own wallet.
 
 **Requirements**
-- **B1.1-R1** THE package SHALL pin `@arkiv-network/sdk` to an exact version and export the Rabdi chain config (ID `7794095`), including the `wallet_addEthereumChain` parameters.
-- **B1.1-R2** THE app-side Arkiv client SHALL sign with the EIP-1193 provider from the shell's `useWallet()` (AppKit), never with a raw key. Only local scripts and the CLI take a key, from their own `.env`.
-- **B1.1-R3** THE `Faucet` contract (`packages/faucet`, on Rabdi) SHALL hold organizer-funded tGLM, and its `drip(address)` SHALL send a fixed amount at most once per address, callable only by the organizer or addresses the organizer has given the desk role.
-- **B1.1-R4** THE `/organizer/faucet` web-only screen SHALL let a desk wallet scan or paste an address, call `drip`, and show the transaction and the new balance. A fresh wallet has no gas to call `drip` itself, which is why the desk calls it.
+- **B1.1-R1** THE package SHALL pin `@arkiv-network/sdk` (1.0.x) to an exact version and export the Rabdi chain config (`rabdi({ accessKey })`, ID `7794095`), including the `wallet_addEthereumChain` parameters.
+- **B1.1-R2** THE app-side Arkiv client SHALL use `EXPO_PUBLIC_ARKIV_ACCESS_KEY` (the public app key) for its transport and SHALL sign with the EIP-1193 provider from the shell's `useWallet()` (AppKit), never with a raw key. Only local scripts and the CLI take a signing key and their own Arkiv access key, from their own `.env`. Keyed URLs are redacted in every log and error.
+- **B1.1-R3** THE `/organizer/faucet` web-only screen SHALL let the desk wallet scan or paste an address, send a fixed tGLM amount (from `event.config.ts`) to it, then write a readonly `drip {recipient, tx}` record. A fresh wallet has no gas to fetch tGLM itself, which is why the desk sends it.
+- **B1.1-R4** WHEN a `drip` record from the desk wallet already exists for that address, THE screen SHALL refuse to send again.
 - **B1.1-R5** THE package SHALL expose an in-memory `FakeArkiv` with the same API for unit tests, enforcing the owner, readonly, permissionlessExtension and expiry rules.
-- **B1.1-R6** THE faucet address SHALL be written to `deployments/rabdi.json`.
+- **B1.1-R6** THE desk wallet address SHALL be written to `deployments/rabdi.json`.
 
-If the P0.6 spike chose the no-contract fallback, R3 and R6 are dropped, and R4 sends a plain transfer from the desk wallet instead.
-
-**Commit:** `feat(arkiv): B1.1 rabdi chain config, faucet contract and faucet screen`
+**Commit:** `feat(arkiv): B1.1 rabdi chain config and desk tglm drip`
 
 ---
 
 ### B1.2 · Typed record kinds and writers
 
 **Requirements**
-- **B1.2-R1** THE package SHALL define one typed schema per kind in the table above and export a writer per kind.
+- **B1.2-R1** THE package SHALL define one typed schema per kind in the table above with `defineSchema`, marking `.indexed()` every column a reader filters on, and export a writer per kind.
 - **B1.2-R2** WHEN any write is made, THE writer SHALL attach the four common attributes, plus the expiry and flags from the table.
 - **B1.2-R3** WHEN a write would exceed Arkiv limits (32 attributes, 128-byte strings, 128 KiB payload, maximum lifetime), THE writer SHALL reject it before sending.
 - **B1.2-R4** WHEN an extension would move expiry earlier, THE writer SHALL reject it.
@@ -75,8 +78,10 @@ If the P0.6 spike chose the no-contract fallback, R3 and R6 are dropped, and R4 
 - **B1.3-R3** WHEN several records must exist together (clock-in + duty pass; a lost claim + the next offer), THE wrapper SHALL use one `executeBatch`, which is also one wallet approval.
 - **B1.3-R4** THE readers SHALL be typed, and SHALL skip, not crash on, records that fail schema parsing.
 - **B1.3-R5** WHEN screens need live updates, THE `useArkivLive` hook SHALL use `watchEntityEvents` with `onError`, and SHALL compare `$expiresAt` to the current block, because expiry fires no event.
-- **B1.3-R6** THE readers SHALL never use `ne()` or `not()`; a lint rule enforces this.
-- **B1.3-R7** THE readers SHALL cache on the device and stay inside the public-RPC limits measured in P0.6.
+- **B1.3-R6** WHEN the app resumes from the background, or the watcher errors, THE hook SHALL recreate the watcher at head and reconcile current state with a query. A watcher more than ~1,000 blocks behind never recovers, and old logs can't be backfilled.
+- **B1.3-R7** THE readers SHALL never use `ne()` or `not()`; a lint rule enforces this.
+- **B1.3-R8** THE readers SHALL cache on the device and stay inside the app-key quota measured in P0.6.
+- **B1.3-R9** EVERY write SHALL carry an explicit nonce (latest, with pending checked), gas (floor 1,000,000 + 400,000 per extra batch operation, at least 2× the estimate) and current gasPrice, and SHALL check `receipt.status`. The only retry allowed is the single gas-exhaustion retry described in the `arkiv-write-safety` skill.
 
 **Tasks**
 - [ ] Per-wallet queue with read-back reconciliation, persisted across app restarts
@@ -102,8 +107,10 @@ If the P0.6 spike chose the no-contract fallback, R3 and R6 are dropped, and R4 
 - [ ] The same wallet writing from the phone and the web at once: retries never create a duplicate
 - [ ] A clock-in batch asks for exactly one approval
 - [ ] The watcher loses its connection: `onError` fires and the UI shows "live updates paused"
+- [ ] Background the app for 40 min and resume: the watcher is recreated, missed changes show up after reconciling
 - [ ] A record passes its `$expiresAt` block: the hook drops it without an event
-- [ ] `drip` twice to one address: the second reverts. `drip` from a wallet without the desk role: reverts
+- [ ] Drip twice to one address: the second is refused before sending
+- [ ] Search logs and error messages for the keyed Rabdi URL: always redacted
 - [ ] Search the web export and the APK for any private key: absent
 - [ ] Sneak a `ne()` into a reader: lint fails
 

@@ -13,13 +13,13 @@ The real names from A1 and the real records from B1 agree: every Arkiv record's 
 | Before | After |
 | --- | --- |
 | `fixtures/personas.json` with placeholder addresses | The real addresses of the seeded Sepolia badges |
-| B1 writes on Rabdi with fixture labels | The same writes with real labels, from real wallets funded by the `Faucet` |
+| B1 writes on Rabdi with fixture labels | The same writes with real labels, from real wallets funded by the desk drip |
 | Flags | Unchanged (the ENS flag stays `mock` until I2) |
 
 ## Steps (one commit each)
 
 1. `chore(fixtures): I1 fill personas with seeded sepolia addresses`
-2. `chore(fixtures): I1 drip tglm to persona wallets from the faucet` (records the drip tx list)
+2. `chore(fixtures): I1 drip tglm to persona wallets from the desk` (records the drip tx list)
 3. `test(e2e): I1 every arkiv record's by label resolves to its creator` (uses viem `getEnsAddress` directly; the real `EnsReader` is A2's job)
 4. `test(e2e): I1 write one record of each B1 kind with real personas`
 5. One record written from the Android app with a persona imported into MetaMask, through AppKit: checked by the same e2e test
@@ -33,7 +33,7 @@ The real names from A1 and the real records from B1 agree: every Arkiv record's 
 **A attacks B's code:**
 - [ ] Write a record with `by` set to a badge you don't own: B1 doesn't stop it (correct, that's B2's job), and the e2e check flags it
 - [ ] Use a persona wallet with zero tGLM: a clear error, no stuck queue
-- [ ] `drip` a wallet that was already dripped: reverts, the desk screen says so
+- [ ] Drip a wallet that was already dripped: the desk screen refuses before sending
 - [ ] Search the web export and the APK for any private key
 
 **B attacks A's code:**

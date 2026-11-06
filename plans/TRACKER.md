@@ -31,7 +31,7 @@ Status values: `todo` · `doing` · `done` · `blocked`. Finding status: `open` 
 | P0.1 Repo skeleton and CI | A | done | 6b95a7f | ENSv2 pinned at contracts-v2@48b3e2d, forge-std v1.17.0. `expo export --platform web` joins `ci:local` in P0.5. CI also triggers on phase branches. CODEOWNERS uses `@person-a`/`@person-b` placeholders |
 | P0.2 Shared types, config, deployments | B (built by A) | done | | Schema lives in `packages/shared/src/deployments.ts` (not `deployments/schema.ts`) so it stays inside a package. Unset addresses are `null`; `required()` throws on them. Empty label `""` = the edition name (organizer). Event times are demo values (27–28 Nov 2026 IST); set real ones before I4. Labels: ENSIP-15 normalized **and** `[a-z0-9-]` per segment (ENSIP-15 alone allows emoji and folds case) |
 | P0.3 Interfaces, mocks, conformance | pair | todo | | |
-| P0.4 Fixtures | B | todo | | |
+| P0.4 Fixtures | B (built by A) | done | | 43 personas (4 leads + 10 volunteers, 6 partner judges + head judge, 2 staff per partner, 3 teams × Person A–D). Addresses are placeholders until I1. Keys: own env var for organizer/results/desk, else HD index into `PERSONA_MNEMONIC`. Story extras beyond P0.4-R3: `ravi.volunteers` revoked at start+5h; `tara.volunteers` is the badge that expires (start+8h) and is revived (start+10h). JSON has no comments, so each file's story is in a `$comment` field. Typed schemas in `packages/shared/src/fixtures.ts` |
 | P0.5 App shell | A | todo | | |
 
 **Bug hunt:** todo · **Merged:** no

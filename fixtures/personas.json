@@ -1,0 +1,538 @@
+{
+  "$comment": "Every demo actor. Addresses are PLACEHOLDERS (keccak of the persona id) until I1 fills in the real seeded Sepolia addresses. Keys are never stored here: `key.env` names the local .env variable, and `key.index` is the HD index into PERSONA_MNEMONIC. The organizer's label is \"\" (the edition name itself); the results key and the desk wallet hold no badge. Priya, Arjun, Neha and Rohan are leads (their lanyard.perms note is set in ens-history.json). Each team's Person A is its lead.",
+  "personas": [
+    {
+      "id": "organizer",
+      "role": "organizer",
+      "label": "",
+      "book": null,
+      "address": "0xa150562A240F174FB8fdc46B86909FDC6e0b260B",
+      "key": {
+        "env": "ORGANIZER_PRIVATE_KEY"
+      }
+    },
+    {
+      "id": "results",
+      "role": "results-key",
+      "label": null,
+      "book": null,
+      "address": "0x0f4b4Ac3E05e0f976Af53f1915E9F2915bA8Cad6",
+      "key": {
+        "env": "RESULTS_PRIVATE_KEY"
+      }
+    },
+    {
+      "id": "desk",
+      "role": "desk",
+      "label": null,
+      "book": null,
+      "address": "0x44A6C3b575580279Cc1c1664a13b5D8649921392",
+      "key": {
+        "env": "DESK_PRIVATE_KEY"
+      }
+    },
+    {
+      "id": "meera",
+      "role": "volunteer-coordinator",
+      "label": "meera.volunteers",
+      "book": "volunteers",
+      "address": "0x381E538cBc7666886B58d77E3C79B0c91691379D",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 0
+      }
+    },
+    {
+      "id": "kabir",
+      "role": "head-judge",
+      "label": "kabir.judges",
+      "book": "judges",
+      "address": "0x29751229686711130bdEf6f14D128b9ba575Acd5",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 1
+      }
+    },
+    {
+      "id": "partner-arkiv",
+      "role": "partner",
+      "label": "arkiv.partners",
+      "book": "partners",
+      "partner": "arkiv",
+      "address": "0xcbe85f051C6B8dF73b8D5a9733710b97bdF55a36",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 2
+      }
+    },
+    {
+      "id": "sam",
+      "role": "partner-staff",
+      "label": "sam.staff.arkiv.partners",
+      "book": "staff.arkiv.partners",
+      "partner": "arkiv",
+      "address": "0x16f5954D0F3E33736Ce8Af773d05Ecf60967C213",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 3
+      }
+    },
+    {
+      "id": "lina",
+      "role": "partner-staff",
+      "label": "lina.staff.arkiv.partners",
+      "book": "staff.arkiv.partners",
+      "partner": "arkiv",
+      "address": "0xD69D171A1ffF306D8B50B35110e7c06c2bAcf899",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 4
+      }
+    },
+    {
+      "id": "ana",
+      "role": "judge",
+      "label": "ana.judges.arkiv.partners",
+      "book": "judges.arkiv.partners",
+      "partner": "arkiv",
+      "address": "0xe69eCbd6E0E27C1CF8bfd59310ac769d367B264B",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 5
+      }
+    },
+    {
+      "id": "ben",
+      "role": "judge",
+      "label": "ben.judges.arkiv.partners",
+      "book": "judges.arkiv.partners",
+      "partner": "arkiv",
+      "address": "0xB3d0eC7A76674596A144DEb5843220f52A2842C1",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 6
+      }
+    },
+    {
+      "id": "chen",
+      "role": "judge",
+      "label": "chen.judges.arkiv.partners",
+      "book": "judges.arkiv.partners",
+      "partner": "arkiv",
+      "address": "0x090a0165115cBE42Bc4252BEf340F473C12868e9",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 7
+      }
+    },
+    {
+      "id": "partner-ens",
+      "role": "partner",
+      "label": "ens.partners",
+      "book": "partners",
+      "partner": "ens",
+      "address": "0xCb1B12E51F159E4EDA83e99819c74c2Ace60A83F",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 8
+      }
+    },
+    {
+      "id": "omar",
+      "role": "partner-staff",
+      "label": "omar.staff.ens.partners",
+      "book": "staff.ens.partners",
+      "partner": "ens",
+      "address": "0xd75FC876BD92D69b0B8B5D26910bDC6687E56692",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 9
+      }
+    },
+    {
+      "id": "zoe",
+      "role": "partner-staff",
+      "label": "zoe.staff.ens.partners",
+      "book": "staff.ens.partners",
+      "partner": "ens",
+      "address": "0x39f3CB7043fD0eB2341bFda9941Cd15Cf3b3dacf",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 10
+      }
+    },
+    {
+      "id": "dev",
+      "role": "judge",
+      "label": "dev.judges.ens.partners",
+      "book": "judges.ens.partners",
+      "partner": "ens",
+      "address": "0xb60922BeCB76A6F9701f8bacc9cc9e0b573ca470",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 11
+      }
+    },
+    {
+      "id": "eli",
+      "role": "judge",
+      "label": "eli.judges.ens.partners",
+      "book": "judges.ens.partners",
+      "partner": "ens",
+      "address": "0xc397b911ba615FF458b924A7cc629658e6A77fc7",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 12
+      }
+    },
+    {
+      "id": "fay",
+      "role": "judge",
+      "label": "fay.judges.ens.partners",
+      "book": "judges.ens.partners",
+      "partner": "ens",
+      "address": "0xAE52f918a07bdca6c93F5490deBF85D3BDbf0A99",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 13
+      }
+    },
+    {
+      "id": "priya",
+      "role": "lead",
+      "label": "priya.volunteers",
+      "book": "volunteers",
+      "address": "0xDeE2e6483DF4d70171d5127D49c9d3dbf3921fB7",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 14
+      }
+    },
+    {
+      "id": "arjun",
+      "role": "lead",
+      "label": "arjun.volunteers",
+      "book": "volunteers",
+      "address": "0x4C9890e4341bB5B7c4F3DB93CB8a36d1ef5502E9",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 15
+      }
+    },
+    {
+      "id": "neha",
+      "role": "lead",
+      "label": "neha.volunteers",
+      "book": "volunteers",
+      "address": "0x568C6E49ab10c81B5384E7D713d4E42CfE2D91C6",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 16
+      }
+    },
+    {
+      "id": "rohan",
+      "role": "lead",
+      "label": "rohan.volunteers",
+      "book": "volunteers",
+      "address": "0xc417aeF12f424A68E1d61aE3508159aC1C4AD88D",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 17
+      }
+    },
+    {
+      "id": "ravi",
+      "role": "volunteer",
+      "label": "ravi.volunteers",
+      "book": "volunteers",
+      "address": "0xbADc2caaB9F9bD824A9993e9E38EBb31DE388888",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 18
+      }
+    },
+    {
+      "id": "tara",
+      "role": "volunteer",
+      "label": "tara.volunteers",
+      "book": "volunteers",
+      "address": "0x3a52f5Ba2f3198711E199f1Dc51f89323B6418d9",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 19
+      }
+    },
+    {
+      "id": "ishaan",
+      "role": "volunteer",
+      "label": "ishaan.volunteers",
+      "book": "volunteers",
+      "address": "0x1d078Ab56a218935B4257Bb6411F69f0eff8DB2E",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 20
+      }
+    },
+    {
+      "id": "kavya",
+      "role": "volunteer",
+      "label": "kavya.volunteers",
+      "book": "volunteers",
+      "address": "0x5f07634De705746a2bb17379EF589F5913805196",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 21
+      }
+    },
+    {
+      "id": "aditya",
+      "role": "volunteer",
+      "label": "aditya.volunteers",
+      "book": "volunteers",
+      "address": "0xfeE6e6F25F34cDCF0Dfda3c06438FDb10De9B7bD",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 22
+      }
+    },
+    {
+      "id": "sana",
+      "role": "volunteer",
+      "label": "sana.volunteers",
+      "book": "volunteers",
+      "address": "0x1E7fC7A426CEF7d7eE06c0F00be1f37AbA76E8aa",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 23
+      }
+    },
+    {
+      "id": "vikram",
+      "role": "volunteer",
+      "label": "vikram.volunteers",
+      "book": "volunteers",
+      "address": "0x06B6238F7bCcC07A3F14712Ad18212B7763D96C8",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 24
+      }
+    },
+    {
+      "id": "pooja",
+      "role": "volunteer",
+      "label": "pooja.volunteers",
+      "book": "volunteers",
+      "address": "0x5a18e38e0c1CF5DD42d6a5b91E7036E8cdcE417C",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 25
+      }
+    },
+    {
+      "id": "farhan",
+      "role": "volunteer",
+      "label": "farhan.volunteers",
+      "book": "volunteers",
+      "address": "0x6c5b2Ddb40F18f5d27C139E8c420bbc404a739F7",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 26
+      }
+    },
+    {
+      "id": "diya",
+      "role": "volunteer",
+      "label": "diya.volunteers",
+      "book": "volunteers",
+      "address": "0x50D0755A5D2236D7Ab4fdB7Db0A17Ace7372b0eC",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 27
+      }
+    },
+    {
+      "id": "zkpay-a",
+      "role": "hacker",
+      "label": "zkpay-a.hackers",
+      "book": "hackers",
+      "team": "zkpay",
+      "displayName": "Person A",
+      "address": "0xb6389272fC87B792F129d5803c2d524C699b835A",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 28
+      }
+    },
+    {
+      "id": "zkpay-b",
+      "role": "hacker",
+      "label": "zkpay-b.hackers",
+      "book": "hackers",
+      "team": "zkpay",
+      "displayName": "Person B",
+      "address": "0xcea401999C1CB32C61cE0eC66d9a5d9fEf4468fb",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 29
+      }
+    },
+    {
+      "id": "zkpay-c",
+      "role": "hacker",
+      "label": "zkpay-c.hackers",
+      "book": "hackers",
+      "team": "zkpay",
+      "displayName": "Person C",
+      "address": "0x8Dd07BC53E695B887d73d0fc78FC06ef17410155",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 30
+      }
+    },
+    {
+      "id": "zkpay-d",
+      "role": "hacker",
+      "label": "zkpay-d.hackers",
+      "book": "hackers",
+      "team": "zkpay",
+      "displayName": "Person D",
+      "address": "0xf05b4061F8D633FCeb378b1c50b60d4a180d82D5",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 31
+      }
+    },
+    {
+      "id": "mempool-a",
+      "role": "hacker",
+      "label": "mempool-a.hackers",
+      "book": "hackers",
+      "team": "mempool",
+      "displayName": "Person A",
+      "address": "0xDd47e511dfA486cFfc210553b39103e048a8d85d",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 32
+      }
+    },
+    {
+      "id": "mempool-b",
+      "role": "hacker",
+      "label": "mempool-b.hackers",
+      "book": "hackers",
+      "team": "mempool",
+      "displayName": "Person B",
+      "address": "0x855E205d4DeA997EcD5777aC8626c5A5dA6BDD51",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 33
+      }
+    },
+    {
+      "id": "mempool-c",
+      "role": "hacker",
+      "label": "mempool-c.hackers",
+      "book": "hackers",
+      "team": "mempool",
+      "displayName": "Person C",
+      "address": "0x5161E574CBBA2684FE916f243fEFBdc9Ab10DC53",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 34
+      }
+    },
+    {
+      "id": "mempool-d",
+      "role": "hacker",
+      "label": "mempool-d.hackers",
+      "book": "hackers",
+      "team": "mempool",
+      "displayName": "Person D",
+      "address": "0x185f87ec3A252E9638C2fd688480963a43cb950A",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 35
+      }
+    },
+    {
+      "id": "blockparty-a",
+      "role": "hacker",
+      "label": "blockparty-a.hackers",
+      "book": "hackers",
+      "team": "blockparty",
+      "displayName": "Person A",
+      "address": "0xac4b3c4b65Ceb00E66757c6179Ad986262E31290",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 36
+      }
+    },
+    {
+      "id": "blockparty-b",
+      "role": "hacker",
+      "label": "blockparty-b.hackers",
+      "book": "hackers",
+      "team": "blockparty",
+      "displayName": "Person B",
+      "address": "0x1D034C2AD09d8feb3A8aA72DDafE4A29FcA7ebD2",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 37
+      }
+    },
+    {
+      "id": "blockparty-c",
+      "role": "hacker",
+      "label": "blockparty-c.hackers",
+      "book": "hackers",
+      "team": "blockparty",
+      "displayName": "Person C",
+      "address": "0x36Df653bdF5479F18bBD11FA5A96b0f7B7e81274",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 38
+      }
+    },
+    {
+      "id": "blockparty-d",
+      "role": "hacker",
+      "label": "blockparty-d.hackers",
+      "book": "hackers",
+      "team": "blockparty",
+      "displayName": "Person D",
+      "address": "0x77CF62eFD1c0809A97C42879F8aCDbf0ed15A3eA",
+      "key": {
+        "env": "PERSONA_MNEMONIC",
+        "index": 39
+      }
+    }
+  ],
+  "teams": [
+    {
+      "team": "zkpay",
+      "lead": "zkpay-a.hackers",
+      "members": ["zkpay-a.hackers", "zkpay-b.hackers", "zkpay-c.hackers", "zkpay-d.hackers"]
+    },
+    {
+      "team": "mempool",
+      "lead": "mempool-a.hackers",
+      "members": [
+        "mempool-a.hackers",
+        "mempool-b.hackers",
+        "mempool-c.hackers",
+        "mempool-d.hackers"
+      ]
+    },
+    {
+      "team": "blockparty",
+      "lead": "blockparty-a.hackers",
+      "members": [
+        "blockparty-a.hackers",
+        "blockparty-b.hackers",
+        "blockparty-c.hackers",
+        "blockparty-d.hackers"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "$comment": "Hand-made 20x12 test venue. Outer walls, plus a wall at column 10 (rows 1-8) splitting hall-a (left) from hall-b (right), with a doorway at rows 9-10. 12 seats S001-S012; S012 at (17,2) is walled in on all sides (unreachable). One help desk per zone plus a stage. Rle masks run row-major, alternating false/true, starting with false.",
+  "version": 1,
+  "image": {
+    "src": "floorplan.small.png",
+    "width": 400,
+    "height": 240
+  },
+  "cellSizePx": 20,
+  "metresPerCell": 1,
+  "grid": {
+    "cols": 20,
+    "rows": 12,
+    "walkable": [
+      21, 9, 1, 5, 5, 9, 1, 5, 1, 1, 3, 9, 1, 5, 5, 9, 1, 8, 2, 9, 1, 8, 2, 9, 1, 8, 2, 9, 1, 8, 2,
+      9, 1, 8, 2, 18, 2, 18, 21
+    ]
+  },
+  "seats": [
+    {
+      "id": "S001",
+      "x": 2,
+      "y": 2,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S002",
+      "x": 4,
+      "y": 2,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S003",
+      "x": 6,
+      "y": 2,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S004",
+      "x": 2,
+      "y": 5,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S005",
+      "x": 4,
+      "y": 5,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S006",
+      "x": 6,
+      "y": 5,
+      "zone": "hall-a"
+    },
+    {
+      "id": "S007",
+      "x": 12,
+      "y": 2,
+      "zone": "hall-b"
+    },
+    {
+      "id": "S008",
+      "x": 14,
+      "y": 2,
+      "zone": "hall-b"
+    },
+    {
+      "id": "S009",
+      "x": 12,
+      "y": 5,
+      "zone": "hall-b"
+    },
+    {
+      "id": "S010",
+      "x": 14,
+      "y": 5,
+      "zone": "hall-b"
+    },
+    {
+      "id": "S011",
+      "x": 16,
+      "y": 6,
+      "zone": "hall-b"
+    },
+    {
+      "id": "S012",
+      "x": 17,
+      "y": 2,
+      "zone": "hall-b"
+    }
+  ],
+  "pois": [
+    {
+      "id": "help-desk-a",
+      "kind": "help-desk",
+      "name": "Help desk A",
+      "x": 2,
+      "y": 9,
+      "zone": "hall-a"
+    },
+    {
+      "id": "help-desk-b",
+      "kind": "help-desk",
+      "name": "Help desk B",
+      "x": 17,
+      "y": 9,
+      "zone": "hall-b"
+    },
+    {
+      "id": "stage",
+      "kind": "stage",
+      "name": "Stage",
+      "x": 5,
+      "y": 9,
+      "zone": "hall-a"
+    }
+  ],
+  "zones": [
+    {
+      "id": "hall-a",
+      "name": "Hall A",
+      "cells": [21, 9, 11, 9, 11, 9, 11, 9, 11, 9, 11, 9, 11, 9, 11, 9, 11, 9, 11, 9, 30]
+    },
+    {
+      "id": "hall-b",
+      "name": "Hall B",
+      "cells": [31, 8, 12, 8, 12, 8, 12, 8, 12, 8, 12, 8, 12, 8, 12, 8, 12, 8, 12, 8, 21]
+    }
+  ]
+}

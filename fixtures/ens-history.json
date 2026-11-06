@@ -1,0 +1,372 @@
+{
+  "$comment": "Scripted ENS events at mock Sepolia blocks (see timeline.json). MockEnsReader replays events up to the requested block. A name stops resolving when unregistered, or when the block's timestamp >= its expiry. The story: badges issued the day before; four leads get lanyard.perms=shift-manager at start+1h; ravi.volunteers is unregistered at start+5h; Priya's lead note is removed at start+6h; tara.volunteers (a half-day badge) expires at start+8h and is revived with renew at start+10h; ben.judges.arkiv.partners is unregistered 2h into judging.",
+  "story": {
+    "leadsMadeAt": 9007500,
+    "raviRevokedAt": 9008700,
+    "priyaNoteRemovedAt": 9009000,
+    "taraExpiresAtTimestamp": 1795779000,
+    "taraRevivedAt": 9010200,
+    "benRevokedAt": 9015000
+  },
+  "events": [
+    {
+      "block": 9000050,
+      "type": "register",
+      "label": "",
+      "owner": "0xa150562A240F174FB8fdc46B86909FDC6e0b260B",
+      "expiry": 4102444800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zkpay",
+      "owner": "0xb6389272fC87B792F129d5803c2d524C699b835A",
+      "expiry": 1798453800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "mempool",
+      "owner": "0xDd47e511dfA486cFfc210553b39103e048a8d85d",
+      "expiry": 1798453800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "blockparty",
+      "owner": "0xac4b3c4b65Ceb00E66757c6179Ad986262E31290",
+      "expiry": 1798453800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "meera.volunteers",
+      "owner": "0x381E538cBc7666886B58d77E3C79B0c91691379D",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "kabir.judges",
+      "owner": "0x29751229686711130bdEf6f14D128b9ba575Acd5",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "arkiv.partners",
+      "owner": "0xcbe85f051C6B8dF73b8D5a9733710b97bdF55a36",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "sam.staff.arkiv.partners",
+      "owner": "0x16f5954D0F3E33736Ce8Af773d05Ecf60967C213",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "lina.staff.arkiv.partners",
+      "owner": "0xD69D171A1ffF306D8B50B35110e7c06c2bAcf899",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "ana.judges.arkiv.partners",
+      "owner": "0xe69eCbd6E0E27C1CF8bfd59310ac769d367B264B",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "ben.judges.arkiv.partners",
+      "owner": "0xB3d0eC7A76674596A144DEb5843220f52A2842C1",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "chen.judges.arkiv.partners",
+      "owner": "0x090a0165115cBE42Bc4252BEf340F473C12868e9",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "ens.partners",
+      "owner": "0xCb1B12E51F159E4EDA83e99819c74c2Ace60A83F",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "omar.staff.ens.partners",
+      "owner": "0xd75FC876BD92D69b0B8B5D26910bDC6687E56692",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zoe.staff.ens.partners",
+      "owner": "0x39f3CB7043fD0eB2341bFda9941Cd15Cf3b3dacf",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "dev.judges.ens.partners",
+      "owner": "0xb60922BeCB76A6F9701f8bacc9cc9e0b573ca470",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "eli.judges.ens.partners",
+      "owner": "0xc397b911ba615FF458b924A7cc629658e6A77fc7",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "fay.judges.ens.partners",
+      "owner": "0xAE52f918a07bdca6c93F5490deBF85D3BDbf0A99",
+      "expiry": 1795941000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "priya.volunteers",
+      "owner": "0xDeE2e6483DF4d70171d5127D49c9d3dbf3921fB7",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "arjun.volunteers",
+      "owner": "0x4C9890e4341bB5B7c4F3DB93CB8a36d1ef5502E9",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "neha.volunteers",
+      "owner": "0x568C6E49ab10c81B5384E7D713d4E42CfE2D91C6",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "rohan.volunteers",
+      "owner": "0xc417aeF12f424A68E1d61aE3508159aC1C4AD88D",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "ravi.volunteers",
+      "owner": "0xbADc2caaB9F9bD824A9993e9E38EBb31DE388888",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "tara.volunteers",
+      "owner": "0x3a52f5Ba2f3198711E199f1Dc51f89323B6418d9",
+      "expiry": 1795779000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "ishaan.volunteers",
+      "owner": "0x1d078Ab56a218935B4257Bb6411F69f0eff8DB2E",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "kavya.volunteers",
+      "owner": "0x5f07634De705746a2bb17379EF589F5913805196",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "aditya.volunteers",
+      "owner": "0xfeE6e6F25F34cDCF0Dfda3c06438FDb10De9B7bD",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "sana.volunteers",
+      "owner": "0x1E7fC7A426CEF7d7eE06c0F00be1f37AbA76E8aa",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "vikram.volunteers",
+      "owner": "0x06B6238F7bCcC07A3F14712Ad18212B7763D96C8",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "pooja.volunteers",
+      "owner": "0x5a18e38e0c1CF5DD42d6a5b91E7036E8cdcE417C",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "farhan.volunteers",
+      "owner": "0x6c5b2Ddb40F18f5d27C139E8c420bbc404a739F7",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "diya.volunteers",
+      "owner": "0x50D0755A5D2236D7Ab4fdB7Db0A17Ace7372b0eC",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zkpay-a.hackers",
+      "owner": "0xb6389272fC87B792F129d5803c2d524C699b835A",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zkpay-b.hackers",
+      "owner": "0xcea401999C1CB32C61cE0eC66d9a5d9fEf4468fb",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zkpay-c.hackers",
+      "owner": "0x8Dd07BC53E695B887d73d0fc78FC06ef17410155",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "zkpay-d.hackers",
+      "owner": "0xf05b4061F8D633FCeb378b1c50b60d4a180d82D5",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "mempool-a.hackers",
+      "owner": "0xDd47e511dfA486cFfc210553b39103e048a8d85d",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "mempool-b.hackers",
+      "owner": "0x855E205d4DeA997EcD5777aC8626c5A5dA6BDD51",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "mempool-c.hackers",
+      "owner": "0x5161E574CBBA2684FE916f243fEFBdc9Ab10DC53",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "mempool-d.hackers",
+      "owner": "0x185f87ec3A252E9638C2fd688480963a43cb950A",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "blockparty-a.hackers",
+      "owner": "0xac4b3c4b65Ceb00E66757c6179Ad986262E31290",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "blockparty-b.hackers",
+      "owner": "0x1D034C2AD09d8feb3A8aA72DDafE4A29FcA7ebD2",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "blockparty-c.hackers",
+      "owner": "0x36Df653bdF5479F18bBD11FA5A96b0f7B7e81274",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9000300,
+      "type": "register",
+      "label": "blockparty-d.hackers",
+      "owner": "0x77CF62eFD1c0809A97C42879F8aCDbf0ed15A3eA",
+      "expiry": 1796473800
+    },
+    {
+      "block": 9007500,
+      "type": "setText",
+      "label": "priya.volunteers",
+      "key": "lanyard.perms",
+      "value": "shift-manager"
+    },
+    {
+      "block": 9007500,
+      "type": "setText",
+      "label": "arjun.volunteers",
+      "key": "lanyard.perms",
+      "value": "shift-manager"
+    },
+    {
+      "block": 9007500,
+      "type": "setText",
+      "label": "neha.volunteers",
+      "key": "lanyard.perms",
+      "value": "shift-manager"
+    },
+    {
+      "block": 9007500,
+      "type": "setText",
+      "label": "rohan.volunteers",
+      "key": "lanyard.perms",
+      "value": "shift-manager"
+    },
+    {
+      "block": 9008700,
+      "type": "unregister",
+      "label": "ravi.volunteers"
+    },
+    {
+      "block": 9009000,
+      "type": "setText",
+      "label": "priya.volunteers",
+      "key": "lanyard.perms",
+      "value": ""
+    },
+    {
+      "block": 9010200,
+      "type": "renew",
+      "label": "tara.volunteers",
+      "expiry": 1795869000
+    },
+    {
+      "block": 9015000,
+      "type": "unregister",
+      "label": "ben.judges.arkiv.partners"
+    }
+  ]
+}

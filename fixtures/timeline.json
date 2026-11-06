@@ -1,0 +1,30 @@
+{
+  "$comment": "Mock Sepolia clock for MockEnsReader and rules tests: one block every 12 s from a fixed genesis one day before the event starts. block(t) = genesis.block + floor((t - genesis.timestamp) / 12). Key times must match packages/shared/src/event.config.ts.",
+  "blockTimeSeconds": 12,
+  "genesis": {
+    "block": 9000000,
+    "timestamp": 1795663800
+  },
+  "keyTimes": {
+    "eventStart": {
+      "timestamp": 1795750200,
+      "block": 9007200
+    },
+    "submissionDeadline": {
+      "timestamp": 1795836600,
+      "block": 9014400
+    },
+    "judgingEnd": {
+      "timestamp": 1795854600,
+      "block": 9015900
+    },
+    "results": {
+      "timestamp": 1795861800,
+      "block": 9016500
+    },
+    "eventEnd": {
+      "timestamp": 1795869000,
+      "block": 9017100
+    }
+  }
+}

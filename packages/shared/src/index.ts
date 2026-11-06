@@ -1,1 +1,4 @@
-export const PACKAGE = "@lanyard/shared";
+export * from "./event.config";
+export * from "./labels";
+export * from "./deployments";
+export type * from "./types/venue";

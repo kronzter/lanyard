@@ -28,8 +28,8 @@ Status values: `todo` · `doing` · `done` · `blocked`. Finding status: `open` 
 | Spec | Owner | Status | Commit | Notes |
 | --- | --- | --- | --- | --- |
 | P0.6 Wallet and chain spike | pair | todo | | |
-| P0.1 Repo skeleton and CI | A | done | (this commit) | ENSv2 pinned at contracts-v2@48b3e2d, forge-std v1.17.0. `expo export --platform web` joins `ci:local` in P0.5. CI also triggers on phase branches. CODEOWNERS uses `@person-a`/`@person-b` placeholders |
-| P0.2 Shared types, config, deployments | B | todo | | |
+| P0.1 Repo skeleton and CI | A | done | 6b95a7f | ENSv2 pinned at contracts-v2@48b3e2d, forge-std v1.17.0. `expo export --platform web` joins `ci:local` in P0.5. CI also triggers on phase branches. CODEOWNERS uses `@person-a`/`@person-b` placeholders |
+| P0.2 Shared types, config, deployments | B (built by A) | done | | Schema lives in `packages/shared/src/deployments.ts` (not `deployments/schema.ts`) so it stays inside a package. Unset addresses are `null`; `required()` throws on them. Empty label `""` = the edition name (organizer). Event times are demo values (27–28 Nov 2026 IST); set real ones before I4. Labels: ENSIP-15 normalized **and** `[a-z0-9-]` per segment (ENSIP-15 alone allows emoji and folds case) |
 | P0.3 Interfaces, mocks, conformance | pair | todo | | |
 | P0.4 Fixtures | B | todo | | |
 | P0.5 App shell | A | todo | | |

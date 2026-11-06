@@ -1,0 +1,17 @@
+{
+  "chainId": 11155111,
+  "ens": {
+    "verifiableFactory": null,
+    "userRegistryImpl": null,
+    "permissionedResolverImpl": null,
+    "universalResolver": null
+  },
+  "lanyard": {
+    "baseRegistry": null,
+    "editionRegistry": null,
+    "registrar": null,
+    "winnerRegistrar": null,
+    "books": { "hackers": null, "judges": null, "volunteers": null, "partners": null },
+    "resolvers": { "staff": null, "hackers": null, "event": null, "results": null }
+  }
+}
